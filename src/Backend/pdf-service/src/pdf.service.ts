@@ -1,28 +1,39 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
+import { FileUtils } from './file.utils';
 
 @Injectable()
 export class PdfService {
-    constructor() {
-    }
+  constructor() {}
 
-    async print(path: string): Promise<Buffer> {
-        const browser = await puppeteer.launch({ headless: 'new', defaultViewport: null });
-        const page = await browser.newPage();
-        
-        await page.goto(path, { waitUntil: 'networkidle0' });
-        await page.emulateMediaType('screen');
-        
-        const pdf = await page.pdf({
-            path: 'result.pdf',
-            
-            // margin: { top: '100px', right: '50px', bottom: '100px', left: '50px' },
-            printBackground: true,
-            format: 'A4',
-        });
+  async print(file: Buffer): Promise<Buffer> {
+    const tmpFilePath = path.join(__dirname, `${uuidv4()}.html`);
 
-        await browser.close();
-        
-        return pdf;
+    await FileUtils.writeFile(tmpFilePath, file);
+
+    try {
+      const browser = await puppeteer.launch({
+        headless: 'new',
+        defaultViewport: null,
+      });
+      const page = await browser.newPage();
+
+      await page.goto(`file://${tmpFilePath}`, { waitUntil: 'networkidle0' });
+      await page.emulateMediaType('screen');
+
+      const pdf = await page.pdf({
+        // margin: { top: '100px', right: '50px', bottom: '100px', left: '50px' },
+        printBackground: true,
+        format: 'A4',
+      });
+
+      await browser.close();
+
+      return pdf;
+    } finally {
+      await FileUtils.unlink(tmpFilePath);
     }
+  }
 }
