@@ -7,8 +7,10 @@ export class RabbitmqService {
   private connection: amqp.Connection;
   private channel: amqp.Channel;
 
-  async connect(url: string): Promise<void> {
-    this.connection = await amqp.connect(url);
+  constructor(private readonly rabbitMqUri: string) {}
+
+  async connect(): Promise<void> {
+    this.connection = await amqp.connect(this.rabbitMqUri);
     this.channel = await this.connection.createChannel();
   }
 

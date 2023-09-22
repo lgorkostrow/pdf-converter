@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ConfigureMessaging();
+builder.Services.ConfigureMessaging(builder.Configuration.GetSection("RABBITMQ"));
 
 var app = builder.Build();
 

@@ -22,3 +22,39 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     networks:
       - dockerapi-dev
+  
+  pdf-service:
+    image: pdf-service:latest
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: src/Backend/PdfService/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_VHOST=${RABBITMQ_VHOST}
+    networks:
+      - dockerapi-dev 
+        
+  api-orchestrator:
+    image: api-orchestrator:latest
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: src/Backend/PdfConverter.ApiOrchestrator/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - RABBITMQ:User=${RABBITMQ_USER}
+      - RABBITMQ:Pass=${RABBITMQ_PASS}
+      - RABBITMQ:Host=${RABBITMQ_HOST}
+      - RABBITMQ:VHost=${RABBITMQ_VHOST}
+    networks:
+      - dockerapi-dev        

@@ -1,25 +1,23 @@
 ﻿using MassTransit;
-using MassTransit.Transports.Fabric;
 using Messaging.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging.Extensions;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection ConfigureMessaging(this IServiceCollection services)
+    public static IServiceCollection ConfigureMessaging(this IServiceCollection services, IConfigurationSection configurationSection)
     {
         services.AddScoped<IBusProvider, BusProvider>();
         
         services.AddMassTransit(x =>
         {
-            // elided...
-
             x.UsingRabbitMq((context,cfg) =>
             {
-                cfg.Host("localhost", "CUSTOM_HOST", h => {
-                    h.Username("guest");
-                    h.Password("guest");
+                cfg.Host(configurationSection.GetSection("Host").Value, configurationSection.GetSection("VHost").Value, h => {
+                    h.Username(configurationSection.GetSection("User").Value);
+                    h.Password(configurationSection.GetSection("Pass").Value);
                 });
 
                 cfg.ConfigureEndpoints(context);
