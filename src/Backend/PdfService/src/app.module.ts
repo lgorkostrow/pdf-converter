@@ -23,7 +23,7 @@ export const RABBITMQ_URI_BUILDER = (configService: ConfigService) => {
         return {
           exchanges: [
             {
-              name: 'PdfConverter.ApiOrchestrator:Request',
+              name: 'Messaging.Messages:ConvertHtmlToPdfCommand',
               type: 'fanout',
               options: {},
             },

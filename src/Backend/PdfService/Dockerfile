@@ -3,15 +3,30 @@
 # Create app directory
 WORKDIR /usr/src/app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY ./src/Backend/PdfService ./
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+RUN chown -R appuser:appgroup /usr/src/app
+
+COPY --chown=appuser:appgroup ./src/Backend/PdfService ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci
 
-# Bundle app source
-#COPY . .
+# Install Puppeteer dependencies
+RUN apk update && \
+    apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates 
 
+# Set the Puppeteer environment variables
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    
+USER appuser
+    
 # Creates a "dist" folder with the production build
 RUN npm run build
 

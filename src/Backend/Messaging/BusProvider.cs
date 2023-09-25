@@ -16,12 +16,12 @@ public class BusProvider : IBusProvider
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task Publish<TMessage>(TMessage message) where TMessage : class
+    public async Task Publish<TMessage>(TMessage message) where TMessage : class, IMessage
     {
         await _publishEndpoint.Publish(message);
     }
 
-    public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest message) where TRequest : class where TResponse : class
+    public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest message) where TRequest : class, IMessage where TResponse : class
     {
         using var client = _bus.CreateClientFactory().CreateRequest(message, timeout: DefaultRequestTimeout);
         var response = await client.GetResponse<TResponse>();

@@ -8,6 +8,7 @@ WORKDIR /app
 COPY ./src/Backend/PdfConverter.ApiOrchestrator/PdfConverter.ApiOrchestrator.csproj ./PdfConverter.ApiOrchestrator/
 COPY ./src/Backend/Messaging/Messaging.csproj ./Messaging/
 COPY ./src/Backend/Messaging.Abstractions/Messaging.Abstractions.csproj ./Messaging.Abstractions/
+COPY ./src/Backend/Shared/Shared.csproj ./Shared/
 
 # Restore NuGet packages for all projects
 RUN dotnet restore "PdfConverter.ApiOrchestrator/PdfConverter.ApiOrchestrator.csproj"
