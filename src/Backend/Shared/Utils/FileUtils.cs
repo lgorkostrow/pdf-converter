@@ -19,4 +19,22 @@ public static class FileUtils
 
         return Convert.ToBase64String(memoryStream.ToArray());
     }
+
+    public static string MimeTypeToExtension(string mimeType)
+    {
+        var mimeToExtension = new Dictionary<string, string>
+        {
+            { "image/jpeg", ".jpg" },
+            { "image/png", ".png" },
+            { "application/pdf", ".pdf" },
+            { "text/plain", ".txt" },
+        };
+
+        if (!mimeToExtension.ContainsKey(mimeType))
+        {
+            throw new Exception($"Extension not found for {mimeType}");
+        }
+
+        return mimeToExtension[mimeType];
+    }
 }

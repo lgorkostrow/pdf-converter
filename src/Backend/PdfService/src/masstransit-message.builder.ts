@@ -67,7 +67,10 @@ export class MasstransitMessageBuilder<T> {
       destinationAddress: this.destinationAddress,
       responseAddress: null,
       faultAddress: null,
-      messageType: [this.messageType],
+      messageType: [
+        'urn:message:Messaging.Messages:ConvertHtmlToPdfCommand',
+        this.messageType,
+      ],
       message: this.message,
       expirationTime: null,
       sentTime: new Date().toISOString(),

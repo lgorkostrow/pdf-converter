@@ -22,6 +22,17 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     networks:
       - dockerapi-dev
+        
+  postgres_image:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - dockerapi-dev      
   
   pdf-service:
     image: pdf-service:latest
@@ -52,6 +63,27 @@ services:
     ports:
       - "5001:80"
     environment:
+      - RABBITMQ:User=${RABBITMQ_USER}
+      - RABBITMQ:Pass=${RABBITMQ_PASS}
+      - RABBITMQ:Host=${RABBITMQ_HOST}
+      - RABBITMQ:VHost=${RABBITMQ_VHOST}
+    networks:
+      - dockerapi-dev       
+
+  storage:
+    image: storage:latest
+    depends_on:
+      rabbit:
+        condition: service_healthy
+      postgres_image:
+        condition: service_started  
+    build:
+      context: .
+      dockerfile: src/Backend/PdfConverter.Storage/Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - ConnectionStrings:DefaultConnection=Host=postgres_image;Database=Storage;Username=${DB_USER};Password=${DB_PASSWORD}
       - RABBITMQ:User=${RABBITMQ_USER}
       - RABBITMQ:Pass=${RABBITMQ_PASS}
       - RABBITMQ:Host=${RABBITMQ_HOST}

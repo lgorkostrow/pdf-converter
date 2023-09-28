@@ -34,4 +34,16 @@ export class RabbitmqService {
     });
     this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
   }
+
+  publishToExchange<T>(
+    exchangeName: string,
+    message: MasstransitMessage<T>,
+  ): void {
+    console.log(JSON.stringify(message));
+    this.channel.publish(
+      exchangeName,
+      '',
+      Buffer.from(JSON.stringify(message)),
+    );
+  }
 }

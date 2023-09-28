@@ -4,6 +4,8 @@ import { RabbitPayload, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { RabbitmqService } from './rabbitmq.service';
 import { MasstransitMessage } from './messages/masstransit.message';
 import { ConvertHtmlToPdfCommand } from './messages/convert-html-to-pdf.command';
+import { MasstransitMessageBuilder } from './masstransit-message.builder';
+import { HtmlToPdfConvertedEvent } from './messages/html-to-pdf-converted.event';
 
 @Controller('controller-discovery')
 export class PdfController {
@@ -22,9 +24,22 @@ export class PdfController {
   ): Promise<void> {
     console.log(data);
 
-    await this.pdfService.print(data.message.fileContent);
+    const pdfContent = await this.pdfService.print(data.message.fileContent);
 
     console.log('printed');
+    const message = new MasstransitMessageBuilder<HtmlToPdfConvertedEvent>()
+      .setMessageType('urn:message:Messaging.Messages:HtmlToPdfConvertedEvent')
+      .setMessage({
+        fileName: data.message.fileName,
+        mimeType: 'application/pdf',
+        fileContent: pdfContent.toString('base64'),
+      })
+      .build();
+
+    this.rabbitmqService.publishToExchange(
+      'Messaging.Messages:HtmlToPdfConvertedEvent',
+      message,
+    );
   }
 
   // @RabbitRPC({

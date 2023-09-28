@@ -2,6 +2,7 @@ using Messaging.Abstractions;
 using Messaging.Messages;
 using Microsoft.AspNetCore.Mvc;
 using PdfConverter.ApiOrchestrator.Requests;
+using Shared.Controllers;
 using Shared.Utils;
 
 namespace PdfConverter.ApiOrchestrator.Controllers;
@@ -23,6 +24,7 @@ public class ConvertingController : BaseApiController
     {
         await _busProvider.Publish(new ConvertHtmlToPdfCommand()
         {
+            FileName = request.FileName,
             FileContent = FileUtils.ConvertFileFormToByteArray(request.FileContent)
         });
 

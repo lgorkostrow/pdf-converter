@@ -5,7 +5,9 @@ namespace PdfConverter.ApiOrchestrator.Requests;
 
 public record ConvertingRequest : BaseRequest
 {
-    public string ConvertingType { get; set; }
+    public string FileName { get; set; }
+    
+    public string MimeType { get; set; }
     
     [JsonConverter(typeof(Base64FileJsonConverter))]
     public IFormFile FileContent { get; set; }
