@@ -39,7 +39,6 @@ export class RabbitmqService {
     exchangeName: string,
     message: MasstransitMessage<T>,
   ): void {
-    console.log(JSON.stringify(message));
     this.channel.publish(
       exchangeName,
       '',

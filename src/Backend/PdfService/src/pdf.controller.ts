@@ -24,9 +24,10 @@ export class PdfController {
   ): Promise<void> {
     console.log(data);
 
-    const pdfContent = await this.pdfService.print(data.message.fileContent);
+    const pdfContent = await this.pdfService.print(
+      Buffer.from(data.message.fileContent, 'base64'),
+    );
 
-    console.log('printed');
     const message = new MasstransitMessageBuilder<HtmlToPdfConvertedEvent>()
       .setMessageType('urn:message:Messaging.Messages:HtmlToPdfConvertedEvent')
       .setMessage({
@@ -41,30 +42,4 @@ export class PdfController {
       message,
     );
   }
-
-  // @RabbitRPC({
-  //   exchange: 'PdfConverter.ApiOrchestrator:Request',
-  //   routingKey: '',
-  //   queue: 'test-queue-123123',
-  // })
-  // async handleMessage(
-  //   @RabbitPayload() data: MasstransitMessage<ConvertHtmlToPdfPayload>,
-  // ) {
-  //   // Handle the incoming message
-  //   console.log(data);
-  //
-  //   const message = new MasstransitMessageBuilder<ConvertHtmlToPdfPayload>()
-  //     .setRequestId(data.requestId)
-  //     .setConversationId(data.conversationId)
-  //     .setSourceAddress(data.sourceAddress)
-  //     .setDestinationAddress(data.responseAddress)
-  //     .setMessageType('urn:message:PdfConverter.ApiOrchestrator:Response')
-  //     .setMessage({ content: 'Test COntent Response 12' })
-  //     .build();
-  //
-  //   await this.rabbitmqService.sendToResponseAddress(
-  //     data.responseAddress,
-  //     message,
-  //   );
-  // }
 }
