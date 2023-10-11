@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfConverter.Storage", "PdfConverter.Storage\PdfConverter.Storage.csproj", "{7AF3D363-220E-411E-B0D4-7538DBF96811}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfConverter.NotificationService", "PdfConverter.NotificationService\PdfConverter.NotificationService.csproj", "{3D5791C6-E169-4F04-B04B-74C90751CE7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{7AF3D363-220E-411E-B0D4-7538DBF96811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AF3D363-220E-411E-B0D4-7538DBF96811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AF3D363-220E-411E-B0D4-7538DBF96811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D5791C6-E169-4F04-B04B-74C90751CE7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D5791C6-E169-4F04-B04B-74C90751CE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D5791C6-E169-4F04-B04B-74C90751CE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D5791C6-E169-4F04-B04B-74C90751CE7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E59417F3-FD75-4FAB-87A2-384588A5CD2A} = {CBEF1BA6-B043-4FFC-93D4-D6B9836248CA}
@@ -47,5 +53,6 @@ Global
 		{7A439F44-FCF7-43C1-A667-A82B13FB4C74} = {5B7504B6-B0AD-4577-A777-FFCA9701A18F}
 		{E6BFB095-CB57-4F30-8AE2-451258DEC631} = {5B7504B6-B0AD-4577-A777-FFCA9701A18F}
 		{7AF3D363-220E-411E-B0D4-7538DBF96811} = {CBEF1BA6-B043-4FFC-93D4-D6B9836248CA}
+		{3D5791C6-E169-4F04-B04B-74C90751CE7D} = {CBEF1BA6-B043-4FFC-93D4-D6B9836248CA}
 	EndGlobalSection
 EndGlobal

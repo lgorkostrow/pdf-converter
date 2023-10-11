@@ -33,7 +33,7 @@ public class LocalStorage : IStorage
         };
     }
 
-    public async Task Save(string fileName, string mimeType, byte[] fileContent)
+    public async Task<FileEntity> Save(string fileName, string mimeType, byte[] fileContent)
     {
         var folderPath = Path.Combine(_basePath, _fileFolderName);
         CheckFolder(folderPath);
@@ -54,6 +54,8 @@ public class LocalStorage : IStorage
 
         await _context.Files.AddAsync(file);
         await _context.SaveChangesAsync();
+        
+        return file;
     }
 
     private void CheckFolder(string folderPath)

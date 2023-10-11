@@ -89,4 +89,22 @@ services:
       - RABBITMQ:Host=${RABBITMQ_HOST}
       - RABBITMQ:VHost=${RABBITMQ_VHOST}
     networks:
+      - dockerapi-dev      
+        
+  notification-service:
+    image: notification-service:latest
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: src/Backend/PdfConverter.NotificationService/Dockerfile
+    ports:
+      - "5003:80"
+    environment:
+      - RABBITMQ:User=${RABBITMQ_USER}
+      - RABBITMQ:Pass=${RABBITMQ_PASS}
+      - RABBITMQ:Host=${RABBITMQ_HOST}
+      - RABBITMQ:VHost=${RABBITMQ_VHOST}
+    networks:
       - dockerapi-dev        
